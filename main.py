@@ -9,6 +9,7 @@ from creeper_pp.preprocessor import Preprocessor
 from creeper_pp.io_service import IoService
 from creeper_pp.shell_service import ShellService
 from creeper_pp.mrc_service import MrcService
+from creeper_pp.personality_predictor import PersonalityPredictor
 
 auth = tweepy.OAuthHandler(twitter_config.consumer_key, twitter_config.consumer_secret)
 auth.set_access_token(twitter_config.access_token, twitter_config.access_token_secret)

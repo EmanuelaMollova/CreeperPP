@@ -1,2 +1,6 @@
 tweepy
 nltk
+scipy
+scikit-learn
+matplotlib
+twython
