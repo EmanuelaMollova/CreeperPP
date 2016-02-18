@@ -11,9 +11,10 @@ from creeper_pp.user import User
 from tokenizer import tokenizeRawTweetText
 
 class Preprocessor(object):
-    def __init__(self, text):
-        self.text = text
-        self.tokenized = tokenizeRawTweetText(text)
+    def __init__(self, textList):
+        self.textList = textList
+        self.text = ''.join(textList)
+        self.tokenized = tokenizeRawTweetText(self.text)
 
     def tokenize(self):
         return tokenizeRawTweetText(self.text)
@@ -37,10 +38,26 @@ class Preprocessor(object):
     def vader(self):
         sid = SentimentIntensityAnalyzer()
 
-        ss = sid.polarity_scores(self.text)
-        for k in sorted(ss):
-            print('{0}: {1}, '.format(k, ss[k]))
-        print()
+        results = {'neg': 0.0, 'pos': 0.0, 'neu': 0.0, 'compound': 0.0}
+        for sentence in self.textList:
+            # print(sentence)
+            ss = sid.polarity_scores(sentence)
+            for k in sorted(ss):
+                results[k] += ss[k]
+                # print('{0}: {1}, '.format(k, ss[k]))
+            # print()
+
+        # print('AVERAGE')
+        for k in sorted(results):
+            results[k] = results[k] / len(self.textList)
+        # print(results)
+        return results
+
+        # print('TOTAL')
+        # ss = sid.polarity_scores(self.text)
+        # for k in sorted(ss):
+        #     print('{0}: {1}, '.format(k, ss[k]))
+        # print()
 
         # sentences = ["VADER is smart, handsome, and funny.", # positive sentence example
         #     "VADER is smart, handsome, and funny!", # punctuation emphasis handled correctly (sentiment intensity adjusted)
