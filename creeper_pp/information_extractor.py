@@ -23,7 +23,10 @@ class InformationExtractor(object):
         retweets_count = 0
         words_count = 0
         for page_num in range(1, pages_count + 1):
-            for status in user.timeline(count = self.page_length, page = page_num):
+            for status in user.timeline(count = min(self.page_length, max_count), page = page_num):
+                if status.lang != 'en':
+                    continue
+
                 statuses_text += status.text
                 mentions_count += len(status.entities['user_mentions'])
                 hashtags_count += len(status.entities['hashtags'])
@@ -39,4 +42,5 @@ class InformationExtractor(object):
                 hashtags_count,
                 urls_count,
                 words_count,
-                statuses_count)
+                statuses_count,
+                statuses_text)
