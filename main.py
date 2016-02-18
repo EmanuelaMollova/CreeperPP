@@ -10,7 +10,7 @@ from creeper_pp.preprocessor import Preprocessor
 from creeper_pp.io_service import IoService
 from creeper_pp.shell_service import ShellService
 from creeper_pp.mrc_service import MrcService
-# from creeper_pp.personality_predictor import PersonalityPredictor
+from creeper_pp.personality_predictor import PersonalityPredictor
 
 from tweepy.error import TweepError
 
@@ -20,11 +20,6 @@ auth.set_access_token(twitter_config.access_token, twitter_config.access_token_s
 api = tweepy.API(auth)
 ie = InformationExtractor(api)
 
-user = ie.extract('Sriracha_Queen', 200)
-preprocessor = Preprocessor(user.tweets_text)
-preprocessor.most_used_words()
-preprocessor.most_used_hashtags()
-preprocessor.most_used_bigrams()
 
 bigfive_data = os.getcwd() + '/resources/bigfive_data.json'
 sys.stdout.write('reading json... ')
@@ -97,6 +92,32 @@ def predict(uname):
     print
     print 'Neuroticism: ' + str(predicted[4].tolist()[0])
     print 'High scorers tend to be nervous, high-strung, insecure, worrying; Low scorers tend to be calm, relaxed, secure, hardy.'
+
+    preprocessor = Preprocessor(user.tweets_text)
+
+    words = preprocessor.most_used_words()
+    print 'Most used words:'
+    print
+    for (w, count)  in words:
+        print(w)
+
+    print
+
+    hashtags = preprocessor.most_used_hashtags()
+    print 'Most used hashtags:'
+    print
+    for (w, count)  in hashtags:
+        print(w)
+
+    print
+
+    bigrams = preprocessor.most_used_bigrams()
+    print 'Most used bigrams:'
+    print
+    for ((f, s), count)  in bigrams:
+        print(f + " " + s)
+
+    print
 
 while True:
     print
