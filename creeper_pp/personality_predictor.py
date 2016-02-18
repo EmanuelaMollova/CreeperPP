@@ -40,11 +40,11 @@ class PersonalityPredictor(object):
 
     def train(self):
         self.features = normalize(self.features)
-        print self.o_clf.fit(self.features, self.o_value)
-        print self.c_clf.fit(self.features, self.c_value)
-        print self.e_clf.fit(self.features, self.e_value)
-        print self.a_clf.fit(self.features, self.a_value)
-        print self.n_clf.fit(self.features, self.n_value)
+        self.o_clf.fit(self.features, self.o_value)
+        self.c_clf.fit(self.features, self.c_value)
+        self.e_clf.fit(self.features, self.e_value)
+        self.a_clf.fit(self.features, self.a_value)
+        self.n_clf.fit(self.features, self.n_value)
 
     def predict(self, features):
         o = self.o_clf.predict([features])
