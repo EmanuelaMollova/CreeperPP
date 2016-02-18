@@ -2,6 +2,7 @@ import tweepy
 import twitter_config
 
 from creeper_pp.information_extractor import InformationExtractor
+from creeper_pp.features_extractor import FeaturesExtractor
 from creeper_pp.preprocessor import Preprocessor
 
 auth = tweepy.OAuthHandler(twitter_config.consumer_key, twitter_config.consumer_secret)
@@ -17,6 +18,9 @@ print user.following_count
 print user.total_tweets
 print user.mentions_count
 print user.replies_count
+
+fe = FeaturesExtractor(user)
+print fe.get_features()
 
 # print user.tweets_text
 
