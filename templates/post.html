@@ -1,0 +1,110 @@
+$def with (params)
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>CreeperPP</title>
+<meta charset='utf-8'>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" media="screen" rel="stylesheet" />
+<style>
+p.lead {
+    margin-bottom: 5px !important;
+}
+</style>
+</head>
+
+<body>
+    <div class="container text-center">
+        <h1>Creeper Personality Prediction</h1>
+
+        <br><br>
+
+        <form action="" method="post">
+            <div class="form-group">
+
+                <label for="exampleInputEmail1">Twitter username</label>
+                <input type="input" class="form-control" name="name" class="" id="name" placeholder="">
+            </div>
+
+            <p>
+                <button type="submit" class="btn btn-primary">Check</button>
+            </p>
+        </form>
+
+        $if params['error']:
+            <br>
+            <div>
+                <h2>Oops... something went wrong</h2><br>
+            </div>
+        $else:
+            <br>
+            <div>
+                <h2>BigFive Results for $params['user']</h2><br>
+
+                <ul class="text-left">
+                    <li>
+                        <p class="lead">Openness to Experience/Intellect: <span>$params['o']</span></p>
+                        <span>High scorers tend to be original, creative, curious, complex; Low scorers tend to be conventional, down to earth, narrow interests, uncreative.</p>
+                    </li>
+
+                    <li>
+                        <p class="lead">Conscientiousness: <span>$params['c']</span></p>
+                        <p>High scorers tend to be reliable, well-organized, self-disciplined, careful; Low scorers tend to be disorganized, undependable, negligent.</p>
+                    </li>
+
+                    <li>
+                        <p class="lead">Extraversion: <span>$params['e']</span></p>
+                        <p>High scorers tend to be sociable, friendly, fun loving, talkative; Low scorers tend to be introverted, reserved, inhibited, quiet.</p>
+                    </li>
+
+                    <li>
+                        <p class="lead">Agreeableness: <span>$params['a']</span></p>
+                        <p>High scorers tend to be good natured, sympathetic, forgiving, courteous; Low scorers tend to be critical, rude, harsh, callous.</p>
+                    </li>
+
+                    <li>
+                        <p class="lead">Neuroticism: <span>$params['n']</span></p>
+                        <p>High scorers tend to be nervous, high-strung, insecure, worrying; Low scorers tend to be calm, relaxed, secure, hardy.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <br>
+            <div>
+                <h2>Most used terms</h2><br>
+                <table class="table text-left">
+                    <tr>
+                        <th>Words</th>
+                        <th>Hastags</th>
+                        <th>Phrases<th>
+                    </tr>
+                    <tr>
+                        <td>
+                            $for word in params['top_words']:
+                                <p>$word</p>
+                        </td>
+
+                        <td>
+                            $for word in params['hashtags']:
+                                <p>$word</p>
+                        </td>
+
+                        <td>
+                            $for word in params['bigrams']:
+                                <p>$word</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <br>
+            <div>
+                <h2>Similar users</h2><br>
+                <ul class="text-left">
+                    $for word in params['similar']:
+                        <li class="lead"><a href="http://twitter.com/$word['id']">http://twitter.com/$word['id']</a></li>
+                </ul>
+            </div>
+    </div>
+</body>
+</html>
