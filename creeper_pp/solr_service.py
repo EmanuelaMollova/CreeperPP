@@ -21,6 +21,15 @@ class SolrService(object):
 
         return users
 
+    def getAllUsers(self):
+        results = self.conn.search('*:*')
+        users = []
+        for user in results:
+            users.append(user)
+
+        return users
+
+
     def addUser(self, userDict):
         toAdd = []
         toAdd.append(userDict)
