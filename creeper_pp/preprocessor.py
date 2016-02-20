@@ -69,7 +69,7 @@ class Preprocessor(object):
         for (w, count)  in all:
             list.append(w)
 
-        return ' '.join(list)
+        return '|'.join(list)
 
     def most_used_hashtags(self, max_count = 5):
         count_all = Counter()
@@ -80,7 +80,7 @@ class Preprocessor(object):
         for (w, count)  in all:
             list.append(w)
 
-        return ' '.join(list)
+        return '|'.join(list)
 
 
     def most_used_bigrams(self, max_count = 5):
