@@ -5,9 +5,8 @@ from sklearn.preprocessing import normalize
 from sklearn.neighbors import KNeighborsRegressor
 
 class PersonalityPredictor(object):
-    nn = 10
-
-    def __init__(self):
+    def __init__(self, nn):
+        self.nn = nn
         self.o_clf = KNeighborsRegressor(n_neighbors=self.nn)
         self.c_clf = KNeighborsRegressor(n_neighbors=self.nn)
         self.e_clf = KNeighborsRegressor(n_neighbors=self.nn)
@@ -47,9 +46,15 @@ class PersonalityPredictor(object):
         self.n_clf.fit(self.features, self.n_value)
 
     def predict(self, features):
-        o = self.o_clf.predict([features])
-        c = self.c_clf.predict([features])
-        e = self.e_clf.predict([features])
-        a = self.a_clf.predict([features])
-        n = self.n_clf.predict([features])
-        return [o, c, e, a, n]
+        o = self.o_clf.predict([features]).tolist()[0]
+        c = self.c_clf.predict([features]).tolist()[0]
+        e = self.e_clf.predict([features]).tolist()[0]
+        a = self.a_clf.predict([features]).tolist()[0]
+        n = self.n_clf.predict([features]).tolist()[0]
+        return {
+                'o': o,
+                'c': c,
+                'e': e,
+                'a': a,
+                'n': n
+                }

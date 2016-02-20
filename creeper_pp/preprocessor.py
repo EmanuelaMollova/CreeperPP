@@ -73,7 +73,7 @@ class Preprocessor(object):
 
         return count_all.most_common(max_count)
 
-    def most_used_bigrams(self, max_count):
+    def most_used_bigrams(self, max_count = 5):
         count_all = Counter()
         terms_all = [term for term in bigrams(self.remove_stop_words_and_urls(True))]
         count_all.update(terms_all)
