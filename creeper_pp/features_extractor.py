@@ -27,9 +27,9 @@ class FeaturesExtractor(object):
         for k in sorted(sentiment):
             self.features.append(sentiment[k])
 
-        # mrc_location = os.getcwd() + '/resources/mrc/1054'
-        # mrc = MrcService(mrc_location)
-        # self.features.extend(mrc.get_vector(tokens))
+        mrc_location = os.getcwd() + '/resources/mrc/1054'
+        mrc = MrcService(mrc_location)
+        self.features.extend(mrc.get_vector(tokens))
 
     def get_features(self):
         return self.features

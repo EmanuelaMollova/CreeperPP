@@ -1,5 +1,5 @@
 class FeaturesConverter(object):
-    vector_features_cnt = 18
+    vector_features_cnt = 28
     features = [
             "followers_cnt",
             "following_cnt",
@@ -53,20 +53,21 @@ class FeaturesConverter(object):
 
 
     @classmethod
-    def convert_features_to_solr(self, features_dict):
+    def convert_features_to_solr(self, all_features_dict):
         solr_features_vec = []
-        for user_id in data:
+        for user_id in all_features_dict:
+            features_dict = all_features_dict[user_id]
             solr_features = {}
             solr_features['id'] = user_id
             solr_features['tweets'] = features_dict['tweets']
-            solr_features['o_metric'] = make_float(features_dict['o'])
-            solr_features['c_metric'] = make_float(features_dict['c'])
-            solr_features['e_metric'] = make_float(features_dict['e'])
-            solr_features['a_metric'] = make_float(features_dict['a'])
-            solr_features['n_metric'] = make_float(features_dict['n'])
+            solr_features['o_metric'] = self.make_float(features_dict['o'])
+            solr_features['c_metric'] = self.make_float(features_dict['c'])
+            solr_features['e_metric'] = self.make_float(features_dict['e'])
+            solr_features['a_metric'] = self.make_float(features_dict['a'])
+            solr_features['n_metric'] = self.make_float(features_dict['n'])
             features = features_dict['f']
             for i in range(len(features)):
-                d[sel.features[i] = features[i]
+                solr_features[self.features[i]] = features[i]
             solr_features_vec.append(solr_features)
         return solr_features_vec
 
@@ -75,6 +76,7 @@ class FeaturesConverter(object):
     def convert_solr_to_features(self, solr_features):
         user_dict = {}
         features_dict = {}
+        print solr_features
         features_dict['tweets'] = solr_features['tweets']
         features_dict['o'] = solr_features['o_metric']
         features_dict['c'] = solr_features['c_metric']
