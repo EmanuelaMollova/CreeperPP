@@ -37,7 +37,7 @@ print
 
 def predict(uname):
     predicted = core.predict(uname)
-    ocean = predicted['ocean']
+    ocean = predicted[uname]
     print 'Openness to Experience/Intellect: ' + str(ocean['o'])
     print 'High scorers tend to be original, creative, curious, complex; Low scorers tend to be conventional, down to earth, narrow interests, uncreative.'
     print
@@ -54,7 +54,7 @@ def predict(uname):
     print 'High scorers tend to be nervous, high-strung, insecure, worrying; Low scorers tend to be calm, relaxed, secure, hardy.'
 
 
-    words = predicted['top_words']
+    words = predicted[uname]['top_words']
     print 'Most used words:'
     print
     for (w, count)  in words:
@@ -62,7 +62,7 @@ def predict(uname):
 
     print
 
-    hashtags = predicted['hashtags']
+    hashtags = predicted[uname]['hashtags']
     print 'Most used hashtags:'
     print
     for (w, count)  in hashtags:
@@ -70,7 +70,7 @@ def predict(uname):
 
     print
 
-    bigrams = predicted['bigrams']
+    bigrams = predicted[uname]['bigrams']
     print 'Most used bigrams:'
     print
     for ((f, s), count)  in bigrams:
