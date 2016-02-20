@@ -16,8 +16,7 @@ class InformationExtractor(object):
         total_tweets = user.statuses_count
         statuses_count = min(user.statuses_count, self.max_statuses, max_count)
         pages_count = int(math.ceil(statuses_count / self.page_length))
-        statuses_text = []
-        # statuses_text = ""
+        statuses_text = ""
         mentions_count = 0
         hashtags_count = 0
         urls_count = 0
@@ -28,8 +27,7 @@ class InformationExtractor(object):
                 if status.lang != 'en':
                     continue
 
-                statuses_text.append(status.text)
-                # statuses_text += status.text
+                statuses_text += status.text
                 mentions_count += len(status.entities['user_mentions'])
                 hashtags_count += len(status.entities['hashtags'])
                 urls_count += len(status.entities['urls'])

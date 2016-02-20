@@ -15,9 +15,8 @@ from creeper_pp.user import User
 from tokenizer import tokenizeRawTweetText
 
 class Preprocessor(object):
-    def __init__(self, textList):
-        self.textList = textList
-        self.text = ''.join(textList)
+    def __init__(self, text):
+        self.text = text
         self.tokenized = tokenizeRawTweetText(self.text)
 
     def tokenize(self):
@@ -53,13 +52,9 @@ class Preprocessor(object):
     def vader(self):
         sid = SentimentIntensityAnalyzer()
         results = {'neg': 0.0, 'pos': 0.0, 'neu': 0.0, 'compound': 0.0}
-        for sentence in self.textList:
-            ss = sid.polarity_scores(sentence)
-            for k in sorted(ss):
-                results[k] += ss[k]
-
-        for k in sorted(results):
-            results[k] = results[k] / len(self.textList)
+        ss = sid.polarity_scores(self.text)
+        for k in sorted(ss):
+            results[k] += ss[k]
 
         return results
 
