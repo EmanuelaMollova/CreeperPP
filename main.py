@@ -41,6 +41,7 @@ for username in data:
         user = ie.extract(username, 200)
         fe = FeaturesExtractor(user)
         data[username]['f'] = fe.get_features()
+        data[username]['t'] = user.tweets_text
         i += 1
         print 'done.'
         print
