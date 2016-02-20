@@ -58,24 +58,24 @@ class Preprocessor(object):
 
         return results
 
-    def most_used_words(self):
+    def most_used_words(self, max_count = 5):
         count_all = Counter()
         filtered_terms = self.remove_stop_words_and_urls(True)
         terms_all = [term for term in self.remove_stop_words_and_urls(True) if not term.startswith('@')]
         count_all.update(terms_all)
 
-        return count_all.most_common(5)
+        return count_all.most_common(max_count)
 
-    def most_used_hashtags(self):
+    def most_used_hashtags(self, max_count = 5):
         count_all = Counter()
         terms_all = [term for term in self.remove_stop_words_and_urls() if term.startswith('#')]
         count_all.update(terms_all)
 
-        return count_all.most_common(5)
+        return count_all.most_common(max_count)
 
-    def most_used_bigrams(self):
+    def most_used_bigrams(self, max_count):
         count_all = Counter()
         terms_all = [term for term in bigrams(self.remove_stop_words_and_urls(True))]
         count_all.update(terms_all)
 
-        return count_all.most_common(5)
+        return count_all.most_common(max_count)
