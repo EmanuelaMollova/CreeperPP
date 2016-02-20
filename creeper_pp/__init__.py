@@ -4,3 +4,4 @@ from creeper_pp.io_service import IoService
 from creeper_pp.shell_service import ShellService
 from creeper_pp.mrc_service import MrcService
 from creeper_pp.personality_predictor import PersonalityPredictor
+from creeper_pp.features_converter import FeaturesConverter

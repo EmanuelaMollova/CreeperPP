@@ -2,7 +2,7 @@ from creeper_pp.shell_service import ShellService
 from creeper_pp.io_service import IoService
 
 class MrcService(object):
-    features_count = 13
+    features_count = 14
     features_indexes = [[0 for x in range(2)] for x in range(features_count)]
     nlet = [0,2] #number of letters */
     nphon = [2,4] #number of phomemes */
@@ -26,26 +26,26 @@ class MrcService(object):
     features_indexes[2][1] = nsyl[1]
     features_indexes[3][0] = kffreq[0]
     features_indexes[3][1] = kffreq[1]
-    features_indexes[3][0] = kfncats[0]
-    features_indexes[3][1] = kfncats[1]
     features_indexes[4][0] = kfncats[0]
     features_indexes[4][1] = kfncats[1]
-    features_indexes[5][0] = t_l[0]
-    features_indexes[5][1] = t_l[1]
-    features_indexes[6][0] = brownf[0]
-    features_indexes[6][1] = brownf[1]
-    features_indexes[7][0] = fam[0]
-    features_indexes[7][1] = fam[1]
-    features_indexes[8][0] = conc[0]
-    features_indexes[8][1] = conc[1]
-    features_indexes[9][0] = imag[0]
-    features_indexes[9][1] = imag[1]
-    features_indexes[10][0] = meanc[0]
-    features_indexes[10][1] = meanc[1]
-    features_indexes[11][0] = meanp[0]
-    features_indexes[11][1] = meanp[1]
-    features_indexes[12][0] = aoa[0]
-    features_indexes[12][1] = aoa[1]
+    features_indexes[5][0] = kfnsamp[0]
+    features_indexes[5][1] = kfnsamp[1]
+    features_indexes[6][0] = t_l[0]
+    features_indexes[6][1] = t_l[1]
+    features_indexes[7][0] = brownf[0]
+    features_indexes[7][1] = brownf[1]
+    features_indexes[8][0] = fam[0]
+    features_indexes[8][1] = fam[1]
+    features_indexes[9][0] = conc[0]
+    features_indexes[9][1] = conc[1]
+    features_indexes[10][0] = imag[0]
+    features_indexes[10][1] = imag[1]
+    features_indexes[11][0] = meanc[0]
+    features_indexes[11][1] = meanc[1]
+    features_indexes[12][0] = meanp[0]
+    features_indexes[12][1] = meanp[1]
+    features_indexes[13][0] = aoa[0]
+    features_indexes[13][1] = aoa[1]
 
     mrc_command = './getentry input'
 
