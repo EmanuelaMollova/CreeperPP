@@ -16,7 +16,7 @@ credentials = {
 
 core = Core(solr_config.train_count,
         solr_config.knn,
-        solr_config.knn,
+        solr_config.tweet_count,
         solr_config.search_config)
 core.init_twitter(credentials)
 
