@@ -39,10 +39,13 @@ class Preprocessor(object):
 
     def remove_stop_words_and_urls(self, no_special = False):
         punctuation = list(string.punctuation)
-        stop = stopwords.words('english') + punctuation + ['rt', 'RT', 'via']
-        terms = [token for token in self.tokenized if token not in stop and "http" not in token and self.is_ascii(token)]
+        stop = stopwords.words('english') + punctuation + ['rt', 'RT', 'via', 'i']
+        terms = [token for token in self.tokenized if ((token not in stop) and ("http" not in token) and ("'" not in token) and self.is_ascii(token))]
         if(no_special):
-            terms = [term for term in terms if not term.startswith('#') and not term.startswith('@')]
+            terms = [term for term in terms if not term.startswith('#') and not term.startswith('@') and term.isalpha()]
+
+        terms = [term.lower() for term in terms]
+        terms = [token for token in terms if ((token not in stopwords.words('english')))]
 
         return terms
 
@@ -62,7 +65,8 @@ class Preprocessor(object):
 
     def most_used_words(self):
         count_all = Counter()
-        terms_all = [term for term in self.remove_stop_words_and_urls() if not term.startswith('@')]
+        filtered_terms = self.remove_stop_words_and_urls(True)
+        terms_all = [term for term in self.remove_stop_words_and_urls(True) if not term.startswith('@')]
         count_all.update(terms_all)
 
         return count_all.most_common(5)
