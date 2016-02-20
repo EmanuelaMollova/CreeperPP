@@ -14,7 +14,7 @@ class SolrService(object):
             return result
 
     def getSimilarUsers(self, user_id, tf=1, df = 1, count = 10):
-        similar = self.conn.more_like_this(q='id:'+user_id, mltfl='tweets', **{'mlt.mindf': df, 'mlt.mintf' : tf, 'mlt.count' : count})
+        similar = self.conn.more_like_this(q='id:'+user_id, mltfl='tweets,top_words,hashtags', **{'mlt.mindf': df, 'mlt.mintf' : tf, 'mlt.count' : count})
         users = []
         for user in similar:
             users.append(user)
@@ -31,7 +31,6 @@ class SolrService(object):
 
 
     def addUser(self, userDict):
-        print userDict
         toAdd = []
         toAdd.append(userDict)
 

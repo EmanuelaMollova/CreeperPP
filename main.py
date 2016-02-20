@@ -13,7 +13,7 @@ credentials = {
         'access_token_secret': twitter_config.access_token_secret
         }
 
-core = Core(2,1, 200)
+core = Core(20,1, 200)
 core.init_twitter(credentials)
 
 
@@ -57,24 +57,24 @@ def predict(uname):
     words = predicted[uname]['top_words']
     print 'Most used words:'
     print
-    for (w, count)  in words:
-        print(w)
+    for w  in words:
+        print w
 
     print
 
     hashtags = predicted[uname]['hashtags']
     print 'Most used hashtags:'
     print
-    for (w, count)  in hashtags:
-        print(w)
+    for w  in hashtags:
+        print w
 
     print
 
     bigrams = predicted[uname]['bigrams']
     print 'Most used bigrams:'
     print
-    for ((f, s), count)  in bigrams:
-        print(f + " " + s)
+    for w  in bigrams:
+        print w
 
     print
 

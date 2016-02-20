@@ -84,7 +84,6 @@ class FeaturesConverter(object):
     def convert_solr_to_features(self, solr_features):
         user_dict = {}
         features_dict = {}
-        print solr_features
         features_dict['tweets'] = solr_features['tweets']
         features_dict['top_words'] = solr_features['top_words']
         features_dict['hashtags'] = solr_features['hashtags']

@@ -38,9 +38,12 @@ class Core(object):
         i = 0
         to_remove = []
         for username in self.data:
+            if i == self.train_count:
+                break
             solr_data = self.get_solr_user(username)
             if solr_data:
                 self.data[username] = solr_data[username]
+                i += 1
                 continue
 
             try:
@@ -51,12 +54,12 @@ class Core(object):
                 preprocessor = Preprocessor(user.tweets_text)
                 self.data[username]['top_words'] = preprocessor.most_used_words()
                 self.data[username]['hashtags'] = preprocessor.most_used_hashtags()
+                if self.data[username]['hashtags'] == '':
+                    self.data[username]['hashtags'] = '$'
                 self.data[username]['bigrams'] = preprocessor.most_used_bigrams()
                 solr_dict = FeaturesConverter.convert_features_to_solr({username: self.data[username]})
                 self.solr.addUser(solr_dict[0])
                 i += 1
-                if i == self.train_count:
-                    break
             except ZeroDivisionError:
                 if username in self.data:
                     to_remove.append(username)
@@ -86,8 +89,9 @@ class Core(object):
 
     def predict(self, username):
         prediction_dict = {}
-        solr_user =  self.solr.getUser(username)
+        solr_user =  self.get_solr_user(username)
         if solr_user:
+            print 'got data'
             prediction_dict = solr_user
         else:
             user = self.ie.extract(username, self.tweet_count)
