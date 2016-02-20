@@ -17,10 +17,11 @@ from creeper_pp.features_converter import FeaturesConverter
 from creeper_pp.solr_service import SolrService
 
 class Core(object):
-    def __init__(self, train_count, knn_count, tweet_count):
+    def __init__(self, train_count, knn_count, tweet_count, search_config):
         self.train_count = train_count
         self.knn_count = knn_count
         self.tweet_count = tweet_count
+        self.search_config = search_config
         self.pp = PersonalityPredictor(knn_count)
         self.solr = SolrService('user')
 
@@ -50,13 +51,19 @@ class Core(object):
                 user = self.ie.extract(username, self.tweet_count)
                 fe = FeaturesExtractor(user)
                 self.data[username]['f'] = fe.get_features()
+                if user.tweets_text == '':
+                    continue
                 self.data[username]['tweets'] = user.tweets_text
                 preprocessor = Preprocessor(user.tweets_text)
-                self.data[username]['top_words'] = preprocessor.most_used_words()
-                self.data[username]['hashtags'] = preprocessor.most_used_hashtags()
+                self.data[username]['top_words'] = preprocessor.most_used_words(max_count=self.search_config['top_words'])
+                self.data[username]['hashtags'] = preprocessor.most_used_hashtags(max_count=self.search_config['top_hashtags'])
+                self.data[username]['bigrams'] = preprocessor.most_used_bigrams(max_count=self.search_config['top_bigrams'])
                 if self.data[username]['hashtags'] == '':
                     self.data[username]['hashtags'] = '$'
-                self.data[username]['bigrams'] = preprocessor.most_used_bigrams()
+                if self.data[username]['bigrams'] == '':
+                    self.data[username]['bigrams'] = '$'
+                if self.data[username]['top_words'] == '':
+                    self.data[username]['top_words'] = '$'
                 solr_dict = FeaturesConverter.convert_features_to_solr({username: self.data[username]})
                 self.solr.addUser(solr_dict[0])
                 i += 1
@@ -108,14 +115,22 @@ class Core(object):
                      'a': predicted['a'],
                      'n': predicted['n'],
                      'tweets': user.tweets_text,
-                     'top_words': preprocessor.most_used_words(),
-                     'hashtags': preprocessor.most_used_hashtags(),
-                     'bigrams': preprocessor.most_used_bigrams()
+                     'top_words': preprocessor.most_used_words(max_count=self.search_config['top_words']),
+                     'hashtags': preprocessor.most_used_hashtags(max_count=self.search_config['top_hashtags']),
+                     'bigrams': preprocessor.most_used_bigrams(max_count=self.search_config['top_bigrams'])
                      }
                  }
+            if prediction_dict[username]['hashtags'] == '':
+                prediction_dict[username]['hashtags'] = '$'
+            if prediction_dict[username]['bigrams'] == '':
+                prediction_dict[username]['bigrams'] = '$'
+            if prediction_dict[username]['top_words'] == '':
+                prediction_dict[username]['top_words'] = '$'
+            if prediction_dict[username]['tweets'] == '':
+                prediction_dict[username]['tweets'] = '$'
             solr_dict = FeaturesConverter.convert_features_to_solr(prediction_dict)
             self.solr.addUser(solr_dict[0])
-        similar = self.solr.getSimilarUsers(username)
+        similar = self.solr.getSimilarUsers(username, tf=self.search_config['tf'], df=self.search_config['df'], count=self.search_config['similar'])
         prediction_dict[username].update({
             'similar': similar,
             'top_words': self.split_data(prediction_dict[username]['top_words']),

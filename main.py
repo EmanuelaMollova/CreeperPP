@@ -1,5 +1,6 @@
 import os
 import twitter_config
+import solr_config
 import sys
 
 from tweepy.error import TweepError
@@ -13,7 +14,10 @@ credentials = {
         'access_token_secret': twitter_config.access_token_secret
         }
 
-core = Core(20,1, 200)
+core = Core(solr_config.train_count,
+        solr_config.knn,
+        solr_config.knn,
+        solr_config.search_config)
 core.init_twitter(credentials)
 
 
@@ -77,6 +81,16 @@ def predict(uname):
         print w
 
     print
+    print
+
+    similar = predicted[uname]['similar']
+    print 'Suggested users:'
+    print
+    for w  in similar:
+        print w['id']
+
+    print
+
 
 while True:
     print
