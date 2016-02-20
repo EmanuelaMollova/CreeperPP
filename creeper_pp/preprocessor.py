@@ -18,6 +18,7 @@ class Preprocessor(object):
     def __init__(self, text):
         self.text = text
         self.tokenized = tokenizeRawTweetText(self.text)
+        self.lemmatized = self.lemmatize()
 
     def tokenize(self):
         return tokenizeRawTweetText(self.text)
@@ -39,7 +40,7 @@ class Preprocessor(object):
     def remove_stop_words_and_urls(self, no_special = False):
         punctuation = list(string.punctuation)
         stop = stopwords.words('english') + punctuation + ['rt', 'RT', 'via', 'i']
-        terms = [token for token in self.tokenized if ((token not in stop) and ("http" not in token) and ("'" not in token) and self.is_ascii(token))]
+        terms = [token for token in self.lemmatized if ((token not in stop) and ("http" not in token) and ("'" not in token) and self.is_ascii(token))]
         if(no_special):
             terms = [term for term in terms if not term.startswith('#') and not term.startswith('@') and term.isalpha()]
 
