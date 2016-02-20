@@ -31,6 +31,7 @@ class SolrService(object):
 
 
     def addUser(self, userDict):
+        print userDict
         toAdd = []
         toAdd.append(userDict)
 

@@ -2,6 +2,7 @@ import json
 import tweepy
 import twitter_config
 import sys
+import re
 
 from tweepy.error import TweepError
 
@@ -47,6 +48,12 @@ class Core(object):
                 fe = FeaturesExtractor(user)
                 self.data[username]['f'] = fe.get_features()
                 self.data[username]['tweets'] = user.tweets_text
+                preprocessor = Preprocessor(user.tweets_text)
+                self.data[username]['top_words'] = preprocessor.most_used_words()
+                self.data[username]['hashtags'] = preprocessor.most_used_hashtags()
+                self.data[username]['bigrams'] = preprocessor.most_used_bigrams()
+                solr_dict = FeaturesConverter.convert_features_to_solr({username: self.data[username]})
+                self.solr.addUser(solr_dict[0])
                 i += 1
                 if i == self.train_count:
                     break
@@ -65,7 +72,7 @@ class Core(object):
         self.pp.train()
 
     def get_solr_user(self, username):
-        solr_user =  self.solr_data.getUser(username)
+        solr_user =  self.solr.getUser(username)
         if solr_user:
             return FeaturesConverter.convert_solr_to_features(solr_user)
         else:
@@ -77,13 +84,13 @@ class Core(object):
     def split_bigrams(self, string):
         return self.split_data(string, '|')
 
-    def predict(self, uname):
+    def predict(self, username):
         prediction_dict = {}
-        solr_user =  self.solr_data.getUser(username)
+        solr_user =  self.solr.getUser(username)
         if solr_user:
             prediction_dict = solr_user
         else:
-            user = self.ie.extract(uname, self.tweet_count)
+            user = self.ie.extract(username, self.tweet_count)
             user_fe = FeaturesExtractor(user)
             user_features = user_fe.get_features()
             predicted = self.pp.predict(user_features)
@@ -103,7 +110,7 @@ class Core(object):
                      }
                  }
             solr_dict = FeaturesConverter.convert_features_to_solr(prediction_dict)
-            self.solr.save
+            self.solr.addUser(solr_dict[0])
         similar = self.solr.getSimilarUsers(username)
         prediction_dict[username].update({
             'similar': similar,

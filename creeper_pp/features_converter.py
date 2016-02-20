@@ -1,3 +1,5 @@
+import re
+
 class FeaturesConverter(object):
     vector_features_cnt = 28
     features = [
@@ -64,8 +66,8 @@ class FeaturesConverter(object):
             solr_features['id'] = user_id
             solr_features['tweets'] = features_dict['tweets']
             solr_features['top_words'] = features_dict['top_words']
-            solr_features['tweets'] = features_dict['hashtags']
-            solr_features['tweets'] = features_dict['bigrams']
+            solr_features['hashtags'] = features_dict['hashtags']
+            solr_features['bigrams'] = features_dict['bigrams']
             solr_features['o_metric'] = self.make_float(features_dict['o'])
             solr_features['c_metric'] = self.make_float(features_dict['c'])
             solr_features['e_metric'] = self.make_float(features_dict['e'])
@@ -94,7 +96,10 @@ class FeaturesConverter(object):
         features_dict['n'] = solr_features['n_metric']
         vector = [0 for x in range(self.vector_features_cnt)]
         for key in solr_features:
-            index = self.features.index(key)
+            try:
+                index = self.features.index(key)
+            except ValueError:
+                continue
             if index <= self.last_int_index:
                 vector[index] = int(solr_features[key])
             elif index <= self.last_float_index:
