@@ -73,5 +73,8 @@ class Core(object):
                 'bigrams': preprocessor.most_used_bigrams()
                 }
 
-    def split_data(self, string, delimiter = '|'):
+    def split_data(self, string, delimiter = ' '):
         return string.split(delimiter)
+
+    def split_bigrams(self, string):
+        return self.split_data(string, '|')
