@@ -14,6 +14,7 @@ from creeper_pp.mrc_service import MrcService
 from creeper_pp.personality_predictor import PersonalityPredictor
 from creeper_pp.features_converter import FeaturesConverter
 from creeper_pp.features_converter import FeaturesConverter
+from creeper_pp.solr_service import SolrService
 
 class Core(object):
     def __init__(self, train_count, knn_count, tweet_count):
@@ -21,6 +22,7 @@ class Core(object):
         self.knn_count = knn_count
         self.tweet_count = tweet_count
         self.pp = PersonalityPredictor(knn_count)
+        self.solr = SolrService('user')
 
     def load_json(self, path):
         with open(path) as data_file:
@@ -66,7 +68,7 @@ class Core(object):
         preprocessor = Preprocessor(user.tweets_text)
         return {
                 'ocean': predicted,
-                'words': preprocessor.most_used_words(),
+                'top_words': preprocessor.most_used_words(),
                 'hashtags': preprocessor.most_used_hashtags(),
                 'bigrams': preprocessor.most_used_bigrams()
                 }

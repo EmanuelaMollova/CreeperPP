@@ -34,6 +34,9 @@ class FeaturesConverter(object):
 
             "id",
             "tweets",
+            "top_words",
+            "hashtags",
+            "bigrams",
 
             "o_metric",
             "c_metric",
@@ -60,6 +63,9 @@ class FeaturesConverter(object):
             solr_features = {}
             solr_features['id'] = user_id
             solr_features['tweets'] = features_dict['tweets']
+            solr_features['top_words'] = features_dict['top_words']
+            solr_features['tweets'] = features_dict['hashtags']
+            solr_features['tweets'] = features_dict['bigrams']
             solr_features['o_metric'] = self.make_float(features_dict['o'])
             solr_features['c_metric'] = self.make_float(features_dict['c'])
             solr_features['e_metric'] = self.make_float(features_dict['e'])
@@ -78,6 +84,9 @@ class FeaturesConverter(object):
         features_dict = {}
         print solr_features
         features_dict['tweets'] = solr_features['tweets']
+        features_dict['top_words'] = solr_features['top_words']
+        features_dict['hashtags'] = solr_features['hashtags']
+        features_dict['bigrams'] = solr_features['bigrams']
         features_dict['o'] = solr_features['o_metric']
         features_dict['c'] = solr_features['c_metric']
         features_dict['e'] = solr_features['e_metric']

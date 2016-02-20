@@ -54,7 +54,7 @@ def predict(uname):
     print 'High scorers tend to be nervous, high-strung, insecure, worrying; Low scorers tend to be calm, relaxed, secure, hardy.'
 
 
-    words = predicted['words']
+    words = predicted['top_words']
     print 'Most used words:'
     print
     for (w, count)  in words:
